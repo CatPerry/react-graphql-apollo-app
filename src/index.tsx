@@ -1,11 +1,21 @@
-import { ApolloProvider } from '@apollo/react-hooks';
-import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from "@apollo/react-hooks";
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { HttpLink } from 'apollo-link-http';
 
-const client = new ApolloClient({ uri: 'http://localhost:4000' });
+const cache = new InMemoryCache();
+const link = new HttpLink({
+  uri: 'http://localhost:8080/v1/graphql'
+});
+
+const client = new ApolloClient({
+  cache,
+  link
+});
 
 ReactDOM.render(
   <ApolloProvider client={client}>
