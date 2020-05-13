@@ -1,3 +1,3 @@
 # The app
 
-React app using Typescript, GraphQL, and Apollo
+React app using Typescript, GraphQL, Apollo, and Docker.
