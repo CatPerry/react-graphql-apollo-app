@@ -1,0 +1,25 @@
+// app colors
+// #13bf97, #bf3513, #bf8b13, #5513bf
+
+main#main {
+  height: 100%;
+  width: 100%;
+  padding: 15px;
+  background: url('./../assets/images/white_background_2.jpg') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  
+  div {
+    background-color: rgba(255, 255, 255, 0.872);
+    font-weight: 300;
+    font-size: 0.9em;
+    padding: 20px 30px;
+    z-index: 4;
+    width: 80%;
+    // box-shadow: #5513bf84 0.25px 0.25px 0.5px 1px;
+    // border: #5513bf84 1px solid;
+    border: rgb(242, 239, 239) 1px solid;
+    border-radius: 3px;
+    margin-bottom: 2em;
+  }
+}

@@ -1,25 +1,20 @@
 import React from 'react';
-import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import Header from './components/Header';
+
+import PeopleList from './components/PeopleList';
+
+import './App.scss';
 
 const App: React.FC = () => {
-  const PEOPLE = gql`
-    {
-      profile {
-        id
-        name
-      }
-    }
-  `;
-  const { loading, error, data } = useQuery(PEOPLE);
-  if (loading) return <div>'Loading...'</div>;
-  if (error) return <div>`Error! ${error.message}`</div>;
 
   return (
     <div>
-      {data.profile.map((person: any) => (
-        <div key={person.id}>{person.name}</div>
-      ))}
+      <Header />
+      <PeopleList />
+      <footer>
+        Image Credit:
+        <a href="https://www.vecteezy.com/free-vector/black-and-white-background">Black And White Background Vectors by Vecteezy</a>
+      </footer>
     </div>
   );
 
