@@ -12,8 +12,10 @@ const App: React.FC = () => {
       <Header />
       <PeopleList />
       <footer>
-        Image Credit:
-        <a href="https://www.vecteezy.com/free-vector/black-and-white-background">Black And White Background Vectors by Vecteezy</a>
+        <p className='ImageCredit'>
+          Image Credit:
+          <a href="https://www.vecteezy.com/free-vector/black-and-white-background">Black And White Background Vectors by Vecteezy</a>
+        </p>
       </footer>
     </div>
   );

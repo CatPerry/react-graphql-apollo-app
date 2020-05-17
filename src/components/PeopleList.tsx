@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { useMutation } from '@apollo/react-hooks';
 
+import * as CONSTANTS from '../constants/personModels';
 import './PeopleList.scss';
 
 interface Person {
@@ -13,39 +13,49 @@ interface Person {
 const App: React.FC = () => {
   let input;
   const [personNameInput, setPerson] = useState('');
-  const GET_PEOPLE = gql`
-    {
-      profile {
-        id
-        name
-      }
-    }
-  `;
-
-  const ADD_PERSON = gql`
-    mutation($name: String!) {
-      insert_profile(objects: [{name: $name}]) {
-        returning {
-          id
-          name
-        }
-      }
-    }
-  `;
-
-  const resetInput = () => {
+  const { loading, error, data } = useQuery(CONSTANTS.GET_PEOPLE);
+  const resetInput = (): void => {
     setPerson('');
   };
-
-  const { loading, error, data } = useQuery(GET_PEOPLE);
-  const [insert_profile] = useMutation(ADD_PERSON, {
-    // update: updateCache,
+  const [insert_profile] = useMutation(CONSTANTS.ADD_PERSON, {
     onCompleted: resetInput
   });
-  // const [insert_profile] = useMutation(ADD_PERSON);
+  const [remove_profile] = useMutation(CONSTANTS.DELETE_PERSON);
+  const removePerson = (e: React.MouseEvent, value: Person) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // console.log(e, value);
+    remove_profile({
+      variables: { id: value.id },
+      update(cache, { data }) {
+        const existingPeople: any = cache.readQuery({ query: CONSTANTS.GET_PEOPLE });
+        const newPeople = existingPeople!.profile.filter((p: any) => (p.id !== value.id));
+        cache.writeQuery({
+          query: CONSTANTS.GET_PEOPLE,
+          data: { profile: newPeople }
+        });
+      }
+    });
+  };
 
-  if (loading) return <div>Loading...</div>; //divs required for Typescript
-  if (error) return <div>`Error! ${error.message}`</div>; //same
+  const updateCache = (): void => {
+    insert_profile({
+      variables: { name: personNameInput },
+
+      update(cache, { data }) {
+        const getExistingPeople: any = cache.readQuery({ query: CONSTANTS.GET_PEOPLE });
+        const existingPeople: Person[] = getExistingPeople ? getExistingPeople.profile : [];
+        const newPerson: Person = data.insert_profile!.returning[0];
+        cache.writeQuery({
+          query: CONSTANTS.GET_PEOPLE,
+          data: { profile: [newPerson, ...existingPeople] }
+        });
+      }
+    });
+  };
+
+  if (loading) return <div>Loading...</div>; // <div> required for Typescript
+  if (error) return <div>`Error! ${error.message}`</div>; // same
 
   return (
     <div>
@@ -58,26 +68,17 @@ const App: React.FC = () => {
         </div>
         <div>
           {data.profile.map((person: any) => (
-            <p key={person.id}>{person.name}</p>
+            <p key={person.id}>
+              {person.name}
+              <button onClick={(e) => removePerson(e, person)}>Remove</button>
+            </p>
           ))}
         </div>
         <form
           className='formInput'
           onSubmit={(e) => {
             e.preventDefault();
-            insert_profile({
-              variables: { name: personNameInput },
-
-              update(cache: any, { data }) {
-                const getExistingPeople: any = cache.readQuery({ query: GET_PEOPLE });
-                const existingPeople: Person[] = getExistingPeople ? getExistingPeople.profile : [];
-                const newPerson: Person = data.insert_profile!.returning[0];
-                cache.writeQuery({
-                  query: GET_PEOPLE,
-                  data: { profile: [...existingPeople, newPerson] }
-                });
-              }
-            });
+            updateCache();
           }}
         >
           <input
