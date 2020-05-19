@@ -1,7 +1,8 @@
 // app colors
 // #13bf97, #bf3513, #bf8b13, #5513bf
 
-main#main {
+main#Main {
+  box-sizing: border-box;
   height: 100%;
   width: 100%;
   padding: 15px;
@@ -21,5 +22,43 @@ main#main {
     border: rgb(242, 239, 239) 1px solid;
     border-radius: 3px;
     margin-bottom: 2em;
+  }
+
+  .PersonListing {
+    display: grid;
+    grid-template-columns: 300px 300px;
+    justify-content: space-between;
+    // white-space: wrap;
+  }
+
+  p.SinglePerson {
+    display: grid;
+    grid-template-areas: 'Name ActionButtons';    
+    justify-content: stretch;
+    align-items: center;
+    border-bottom: rgb(242, 239, 239) 1px solid;
+    padding-bottom: 10px;
+  }
+
+  .Name {
+    grid-area: Name;
+    justify-content: flex-start;
+  }
+
+  .ActionButtons {
+    grid-area: ActionButtons;
+    justify-content: end;
+    justify-self: flex-end;
+  }
+
+  button {
+    margin: 0 20px;
+  }
+
+  input {
+    border-radius: 3px;
+    border: rgb(242, 239, 239) 1px solid !important;
+    padding: 10px;
+    margin: 20px 0;
   }
 }

@@ -24,7 +24,6 @@ const App: React.FC = () => {
   const removePerson = (e: React.MouseEvent, value: Person) => {
     e.preventDefault();
     e.stopPropagation();
-    // console.log(e, value);
     remove_profile({
       variables: { id: value.id },
       update(cache, { data }) {
@@ -59,20 +58,12 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <main id='main'>
+      <main id='Main'>
         <div>
           <p>Latest Uploads</p>
           <section>
             Lorem ipsum dolor sit ameht, Lorem ipsum dolor sit ameht. And Lorem ipsum dolor sit ameht lorem ipsum dolor sit ameht; add iframe video feed here and this is a very long sentence so that you can see what that looks like.
           </section>
-        </div>
-        <div>
-          {data.profile.map((person: any) => (
-            <p key={person.id}>
-              {person.name}
-              <button onClick={(e) => removePerson(e, person)}>Remove</button>
-            </p>
-          ))}
         </div>
         <form
           className='formInput'
@@ -88,8 +79,18 @@ const App: React.FC = () => {
             onChange={(e) => (setPerson(e.target.value))}
             ref={n => (input = n)}
           />
-          <button type='submit'>Add a new person</button>
+          <button type='submit' className="btn btn-primary">Add a new person</button>
         </form>
+        <div className='PersonListing'>
+          {data.profile.map((person: any) => (
+            <p key={person.id} className='SinglePerson'>
+              <span className='Name'>{person.name}</span>
+              <span className='ActionButtons'>
+                <button type='submit' className="btn btn-danger" onClick={(e) => removePerson(e, person)}>Remove</button>
+              </span>
+            </p>
+          ))}
+        </div>
       </main>
     </div>
   );

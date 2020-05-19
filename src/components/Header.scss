@@ -19,22 +19,20 @@
     
   }
   
-  p.Nav_BrandName {
-    font-family: "Arial Black", sans-serif;
-    display: flex;
-    flex-direction: row;
-	  animation: bounce-in-left 1.1s both;
-    font-size: 3.8em;
-    letter-spacing: -1px;
-    margin: 0 0 0 20px;
-    
-    .Logo {
-      width: 80px;
-      align-items: flex-end;
-      border-radius: 5px;
-      margin-left: 10px;
-    }
-  }
+}
+a#Nav_BrandName { 
+	text-decoration: none;
+	color: white !important;
+}
+
+#Nav_BrandName {
+	font-family: "Arial Black", sans-serif;
+	display: flex;
+	flex-direction: row;
+	animation: bounce-in-left 1.1s both;
+	font-size: 3.8em;
+	letter-spacing: -1px;
+	margin: 0 0 0 20px;
 }
 
 nav {
